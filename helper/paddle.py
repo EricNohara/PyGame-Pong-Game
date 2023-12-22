@@ -17,6 +17,7 @@ class Paddle(object):
         self.color = "grey"
         self.border_color = "white"
         self.is_clicked = False
+        self.clicked_loc = 0
         
     def draw(self, surface):
         surface.fill("black")
@@ -55,16 +56,18 @@ class Paddle(object):
             self.pos_y += PADDLE_SPEED
             self.pos_y = self.check_valid_pos()
 
+        # Handle clicking and dragging as an input for moving the paddle
         for event in pg.event.get():
             check_exit(event)
             if event.type == pg.MOUSEBUTTONDOWN:
                 self.is_clicked = self.mouse_on_paddle(mouse_pos[0], mouse_pos[1])
+                self.clicked_loc = mouse_pos[1] - self.pos_y
             if event.type == pg.MOUSEBUTTONUP:
                 self.is_clicked = False
-
         if self.is_clicked:
-            self.pos_y = mouse_pos[1]
+            self.pos_y = mouse_pos[1] - self.clicked_loc
             self.pos_y = self.check_valid_pos()
+
                 
 
             
