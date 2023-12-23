@@ -21,7 +21,6 @@ class Paddle(object):
     def draw(self, surface):
         rect = pg.Rect((self.pos_x, self.pos_y), (self.width, self.height))
         pg.draw.rect(surface, self.color, rect)
-        # SCREEN.blit(SCREEN, (0,0))
 
     def increase_score(self):
         self.score += 1
@@ -46,12 +45,13 @@ class Paddle(object):
     def handle_keys(self):
         keys = pg.key.get_pressed()
         mouse_pos = pg.mouse.get_pos()
+        adjusted_speed = PADDLE_SPEED + 10 if keys[pg.K_LSHIFT] or keys[pg.K_RSHIFT] else PADDLE_SPEED
 
         if keys[pg.K_w] or keys[pg.K_UP]:
-            self.pos_y -= PADDLE_SPEED
+            self.pos_y -= adjusted_speed
             self.pos_y = self.check_valid_pos()
         if keys[pg.K_s] or keys[pg.K_DOWN]:
-            self.pos_y += PADDLE_SPEED
+            self.pos_y += adjusted_speed
             self.pos_y = self.check_valid_pos()
 
         # Handle clicking and dragging as an input for moving the paddle
