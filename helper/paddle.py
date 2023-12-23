@@ -14,7 +14,7 @@ class Paddle(object):
         self.pos_y = (HEIGHT-self.height)/2
         self.score = 0
         self.scores = [0,0,0,0,0]
-        self.color = "grey"
+        self.color = "white"
         self.is_clicked = False
         self.clicked_loc = 0
         
@@ -45,7 +45,7 @@ class Paddle(object):
     def handle_keys(self):
         keys = pg.key.get_pressed()
         mouse_pos = pg.mouse.get_pos()
-        adjusted_speed = PADDLE_SPEED + 10 if keys[pg.K_LSHIFT] or keys[pg.K_RSHIFT] else PADDLE_SPEED
+        adjusted_speed = DEFAULT_SPEED + 10 if keys[pg.K_LSHIFT] or keys[pg.K_RSHIFT] else DEFAULT_SPEED
 
         if keys[pg.K_w] or keys[pg.K_UP]:
             self.pos_y -= adjusted_speed

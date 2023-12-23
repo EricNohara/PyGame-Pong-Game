@@ -18,6 +18,8 @@ def play():
     paddle = Paddle()
     ball = Ball()
 
+    print(ball.velocity)
+
     while True:
         surface.fill("black")
 
@@ -25,6 +27,7 @@ def play():
         paddle.draw(surface)
 
         ball.draw(surface)
+        ball.move()
 
         SCREEN.blit(surface, (0,0))
         pg.display.update()

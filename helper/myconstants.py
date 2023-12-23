@@ -12,4 +12,4 @@ FONT = pg.font.Font('freesansbold.ttf', 30)
 HEADER_FONT = pg.font.Font('freesansbold.ttf', 60)
 
 # GAME SETTINGS
-PADDLE_SPEED = 15
+DEFAULT_SPEED = 15
