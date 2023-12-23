@@ -1,4 +1,5 @@
 import pygame as pg
+import math
 
 pg.init()
 
@@ -13,3 +14,4 @@ HEADER_FONT = pg.font.Font('freesansbold.ttf', 60)
 
 # GAME SETTINGS
 DEFAULT_SPEED = 15
+MAX_BOUNCE_ANGLE = 5 * (math.pi/12)

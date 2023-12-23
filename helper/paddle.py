@@ -8,7 +8,7 @@ from helper.quitcheck import check_exit
 
 class Paddle(object):
     def __init__(self):
-        self.height = HEIGHT/6
+        self.height = 120
         self.width = 20
         self.pos_x = WIDTH-40
         self.pos_y = (HEIGHT-self.height)/2
@@ -24,6 +24,9 @@ class Paddle(object):
 
     def increase_score(self):
         self.score += 1
+
+    def get_center(self):
+        return self.pos_y + (self.height/2)
 
     def check_valid_pos(self):
         min_height = 0
