@@ -1,8 +1,8 @@
 import pygame as pg, sys
 # from pygame import mixer
 from helper.paddle import *
+from helper.ball import *
 from helper.myconstants import *
-from helper.quitcheck import check_exit
 
 pg.init()
 
@@ -14,14 +14,18 @@ def play():
     pg.display.set_caption("Play Game")
     clock = pg.time.Clock()
     surface = pg.Surface(SCREEN.get_size()).convert()
-    surface.fill("black")
 
     paddle = Paddle()
+    ball = Ball()
 
     while True:
+        surface.fill("black")
+
         paddle.handle_keys()
         paddle.draw(surface)
-        
+
+        ball.draw(surface)
+
         SCREEN.blit(surface, (0,0))
         pg.display.update()
         clock.tick(60)

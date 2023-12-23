@@ -15,15 +15,13 @@ class Paddle(object):
         self.score = 0
         self.scores = [0,0,0,0,0]
         self.color = "grey"
-        self.border_color = "white"
         self.is_clicked = False
         self.clicked_loc = 0
         
     def draw(self, surface):
-        surface.fill("black")
         rect = pg.Rect((self.pos_x, self.pos_y), (self.width, self.height))
         pg.draw.rect(surface, self.color, rect)
-        pg.draw.rect(surface, self.border_color, rect, 1)
+        # SCREEN.blit(SCREEN, (0,0))
 
     def increase_score(self):
         self.score += 1
