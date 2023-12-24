@@ -1,32 +1,25 @@
 import pygame as pg
 from helper.myconstants import *
 from helper.quitcheck import check_exit
+from helper.ball import *
 
 ###################################################################################################################
 # PADDLE OBJECT
 ###################################################################################################################
-
 class Paddle(object):
     def __init__(self):
         self.height = 120
         self.width = 20
-        self.pos_x = WIDTH-40
+        self.pos_x = 20
         self.pos_y = (HEIGHT-self.height)/2
-        self.score = 0
-        self.scores = [0,0,0,0,0]
         self.color = "white"
-        self.is_clicked = False
-        self.clicked_loc = 0
-        
+
     def draw(self, surface):
         rect = pg.Rect((self.pos_x, self.pos_y), (self.width, self.height))
         pg.draw.rect(surface, self.color, rect)
 
     def increase_score(self):
         self.score += 1
-
-    def get_center(self):
-        return self.pos_y + (self.height/2)
 
     def check_valid_pos(self):
         min_height = 0
@@ -38,6 +31,19 @@ class Paddle(object):
             return max_height
         else:
             return self.pos_y
+        
+    def get_center(self):
+        return self.pos_y + (self.height/2)
+    
+class PlayerPaddle(Paddle):
+    def __init__(self):
+        super().__init__()
+        self.pos_x = WIDTH-40
+        self.score = 0
+        self.scores = [0,0,0,0,0]
+        self.is_clicked = False
+        self.clicked_loc = 0
+        self.hitbox_x = self.pos_x
         
     def mouse_on_paddle(self, m_posx, m_posy):
         if m_posx >= self.pos_x and m_posx <= (self.pos_x + self.width):
@@ -68,6 +74,19 @@ class Paddle(object):
         if self.is_clicked:
             self.pos_y = mouse_pos[1] - self.clicked_loc
             self.pos_y = self.check_valid_pos()
+
+class OpponentPaddle(Paddle):
+    def __init__ (self):
+        super().__init__()
+        self.hitbox_x = self.pos_x + self.width
+
+
+    def move_to_ball(self, ball):
+        ball_center = ball.get_center()
+        self.pos_y = ball_center - (self.height/2)
+        self.pos_y = self.check_valid_pos()
+    
+
 
                 
 

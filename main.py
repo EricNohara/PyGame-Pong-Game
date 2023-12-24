@@ -15,19 +15,24 @@ def play():
     clock = pg.time.Clock()
     surface = pg.Surface(SCREEN.get_size()).convert()
 
-    paddle = Paddle()
+    player = PlayerPaddle()
+    opponent = OpponentPaddle()
     ball = Ball()
 
     while True:
         surface.fill("black")
 
-        paddle.handle_keys()
-        paddle.draw(surface)
+        player.handle_keys()
+        player.draw(surface)
+        opponent.draw(surface)
 
         ball.draw(surface)
         ball.move()
-        ball.collide(paddle)
 
+        opponent.move_to_ball(ball)
+
+        ball.collide(player, opponent)
+      
         SCREEN.blit(surface, (0,0))
         pg.display.update()
         clock.tick(60)
