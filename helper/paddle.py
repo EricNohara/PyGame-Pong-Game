@@ -99,7 +99,7 @@ class OpponentPaddle(Paddle):
             remainder = (tan_calc + (HEIGHT - ball_pos)) % HEIGHT
 
             if num_collisions % 2 != 0:
-                proj_height = remainder
+                proj_height = remainder + 1
             elif num_collisions % 2 == 0:
                 proj_height = HEIGHT - remainder
 
@@ -112,7 +112,7 @@ class OpponentPaddle(Paddle):
             remainder = (tan_calc + ball_pos) % HEIGHT
             
             if num_collisions % 2 != 0:
-                proj_height = HEIGHT - remainder
+                proj_height = HEIGHT - remainder - 1
             elif num_collisions % 2 == 0:
                 proj_height = remainder
 
