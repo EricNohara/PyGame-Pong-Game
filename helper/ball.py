@@ -16,7 +16,10 @@ class Ball(object):
         self.velocity = self.set_init_velocity()
         self.bounce_angle = MAX_BOUNCE_ANGLE
         self.hit_by_player = False
+        self.hit_paddle = 0
         self.pos_when_hit = 0
+        self.num_hits_by_paddle = 0
+        self.current_speed = DEFAULT_SPEED
 
     def get_center(self):
         return self.pos_y + self.radius
@@ -40,10 +43,12 @@ class Ball(object):
         self.bounce_angle = MAX_BOUNCE_ANGLE
         self.pos_x = WIDTH/2 - self.radius
         self.pos_y = HEIGHT/2 - self.radius
+        self.num_hits_by_paddle = 0
 
     def move(self, player, opponent):
-        self.pos_x += self.velocity[0] * DEFAULT_SPEED
-        self.pos_y += self.velocity[1] * DEFAULT_SPEED
+        self.current_speed = DEFAULT_SPEED + ((self.num_hits_by_paddle // 2) * 0.5)
+        self.pos_x += self.velocity[0] * self.current_speed
+        self.pos_y += self.velocity[1] * self.current_speed
         if self.pos_x <= self.radius or self.pos_x >= (WIDTH - self.radius):
             SCORE_SOUND.play()
             won_point = player if self.pos_x <= self.radius else opponent
@@ -63,6 +68,10 @@ class Ball(object):
         else:
             fixed_angle = MAX_BOUNCE_ANGLE if angle > MAX_BOUNCE_ANGLE else (MAX_BOUNCE_ANGLE * -1)
             return fixed_angle
+        
+    def increment_num_hit_by_paddle(self):
+        if self.hit_paddle == 1:
+            self.num_hits_by_paddle += 1
 
     def collide(self, player, opponent):
         ball_center_y = self.get_center()
@@ -71,6 +80,7 @@ class Ball(object):
             if (ball_center_y + self.radius) >= player.pos_y and (ball_center_y - self.radius) <= (player.pos_y + player.height):
                 PADDLE_SOUND.play()
                 self.hit_by_player = True
+                self.hit_paddle += 1
                 self.pos_when_hit = self.get_center()
                 intersect = ball_center_y - player.get_center()
                 normalized_intersect = intersect/(player.height/2)
@@ -81,8 +91,11 @@ class Ball(object):
             if (ball_center_y + self.radius) >= opponent.pos_y and (ball_center_y - self.radius) <= (opponent.pos_y + opponent.height):
                 PADDLE_SOUND.play()
                 self.hit_by_player = False
+                self.hit_paddle += 1
                 intersect = ball_center_y - opponent.get_center()
                 normalized_intersect = intersect/(opponent.height/2)
                 self.bounce_angle = self.return_valid_angle(normalized_intersect * MAX_BOUNCE_ANGLE)
                 self.velocity[0] = math.cos(self.bounce_angle) 
                 self.velocity[1] = math.sin(self.bounce_angle)
+        else:
+            self.hit_paddle = 0

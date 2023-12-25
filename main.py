@@ -1,5 +1,4 @@
-import pygame as pg, sys
-# from pygame import mixer
+import pygame as pg, sys, asyncio
 from helper.paddle import *
 from helper.ball import *
 from helper.myconstants import *
@@ -35,6 +34,7 @@ def play():
             opponent.move_to_projected_y(projected_y, relative_error)
 
         ball.collide(player, opponent)
+        ball.increment_num_hit_by_paddle()
 
         player_score = HEADER_FONT.render("{0}".format(player.score), True, "white")
         p_score_rect = player_score.get_rect()
@@ -43,7 +43,7 @@ def play():
 
         surface.blit(opponent_score, (((WIDTH - o_score_rect.w)/7), HEIGHT/10))
         surface.blit(player_score, (((WIDTH - p_score_rect.w)/7) * 6, HEIGHT/10))
-                    
+                  
         SCREEN.blit(surface, (0,0))
         pg.display.update()
         clock.tick(60)

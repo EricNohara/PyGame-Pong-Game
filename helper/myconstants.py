@@ -20,6 +20,6 @@ PADDLE_SOUND = pg.mixer.Sound("assets/paddle-hit.mp3")
 WALL_SOUND = pg.mixer.Sound("assets/wall-hit.mp3")
 
 # GAME SETTINGS
-DEFAULT_SPEED = 20
+DEFAULT_SPEED = 15
 MAX_BOUNCE_ANGLE = 5 * (math.pi/12)
-OPPONENT_MAX_SPEED = DEFAULT_SPEED / 4
+OPPONENT_MAX_SPEED = 10
