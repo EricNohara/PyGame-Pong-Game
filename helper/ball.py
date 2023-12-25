@@ -12,6 +12,9 @@ class Ball(object):
         self.pos_y = HEIGHT/2 - self.radius
         self.color = "white"
         self.velocity = self.set_init_velocity()
+        self.bounce_angle = MAX_BOUNCE_ANGLE
+        self.hit_by_player = False
+        self.pos_when_hit = 0
 
     def get_center(self):
         return self.pos_y + self.radius
@@ -35,19 +38,26 @@ class Ball(object):
         if self.pos_y <= self.radius or self.pos_y >= (HEIGHT - self.radius):
             self.reflect_velocity(1)
 
+    def test(self):
+        if self.pos_x <= 45 and self.pos_x >= 30:
+            print(self.pos_y + self.radius)
+
     def collide(self, player, opponent):
         ball_center = self.get_center()
         if (self.pos_x + self.radius) >= player.hitbox_x:
             if (ball_center + self.radius) >= player.pos_y and (ball_center + self.radius) <= (player.pos_y + player.height):
+                self.hit_by_player = True
+                self.pos_when_hit = self.get_center()
                 intersect = ball_center - player.get_center()
                 normalized_intersect = intersect/(player.height/2)
-                bounce_angle = normalized_intersect * MAX_BOUNCE_ANGLE
-                self.velocity[0] = math.cos(bounce_angle) * -1
-                self.velocity[1] = math.sin(bounce_angle)
+                self.bounce_angle = normalized_intersect * MAX_BOUNCE_ANGLE
+                self.velocity[0] = math.cos(self.bounce_angle) * -1
+                self.velocity[1] = math.sin(self.bounce_angle)
         elif (self.pos_x + self.radius) <= opponent.hitbox_x:
             if (ball_center + self.radius) >= opponent.pos_y and (ball_center + self.radius) <= (opponent.pos_y + opponent.height):
+                self.hit_by_player = False
                 intersect = ball_center - opponent.get_center()
                 normalized_intersect = intersect/(opponent.height/2)
-                bounce_angle = normalized_intersect * MAX_BOUNCE_ANGLE
-                self.velocity[0] = math.cos(bounce_angle) 
-                self.velocity[1] = math.sin(bounce_angle)
+                self.bounce_angle = normalized_intersect * MAX_BOUNCE_ANGLE
+                self.velocity[0] = math.cos(self.bounce_angle) 
+                self.velocity[1] = math.sin(self.bounce_angle)

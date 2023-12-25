@@ -28,10 +28,10 @@ def play():
 
         ball.draw(surface)
         ball.move()
-
         opponent.move_to_ball(ball)
 
         ball.collide(player, opponent)
+        ball.test()
       
         SCREEN.blit(surface, (0,0))
         pg.display.update()
