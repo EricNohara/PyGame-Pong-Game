@@ -47,6 +47,7 @@ class PlayerPaddle(Paddle):
         self.is_clicked = False
         self.clicked_loc = 0
         self.hitbox_x = self.pos_x
+        print(self.hitbox_x)
         
     def mouse_on_paddle(self, m_posx, m_posy):
         if m_posx >= self.pos_x and m_posx <= (self.pos_x + self.width):
@@ -81,7 +82,7 @@ class PlayerPaddle(Paddle):
 class OpponentPaddle(Paddle):
     def __init__ (self):
         super().__init__()
-        self.hitbox_x = self.pos_x + (2 * self.width)
+        self.hitbox_x = self.pos_x + self.width
 
     def find_projected_y(self, ball):
         angle = ball.bounce_angle
@@ -127,22 +128,3 @@ class OpponentPaddle(Paddle):
         elif self.pos_y > projected_y and abs(self.pos_y - projected_y) > error:
             self.pos_y -= OPPONENT_MAX_SPEED
             self.pos_y = self.check_valid_pos()
-    
-
-
-    
-
-
-
-
-                
-
-            
-
-           
-            
-
-                
-                
-
-        

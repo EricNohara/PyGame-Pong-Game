@@ -47,29 +47,38 @@ class Ball(object):
             won_point.add_score()
             self.reset_ball()
         if self.pos_y <= self.radius or self.pos_y >= (HEIGHT - self.radius):
+            print("Ceiling collision detected!")
             self.reflect_velocity(1)
+            self.pos_y = self.radius + 1 if self.pos_y <= self.radius else HEIGHT - self.radius + 1
 
     def test(self):
         if self.pos_x <= 45 and self.pos_x >= 30:
             print(self.pos_y + self.radius)
 
+    def return_valid_angle(self, angle):
+        if angle <= MAX_BOUNCE_ANGLE and angle >= (MAX_BOUNCE_ANGLE * -1):
+            return angle
+        else:
+            fixed_angle = MAX_BOUNCE_ANGLE if angle > MAX_BOUNCE_ANGLE else (MAX_BOUNCE_ANGLE * -1)
+            return fixed_angle
+
     def collide(self, player, opponent):
         ball_center_y = self.get_center()
         ball_center_x = self.pos_x + self.radius
-        if (ball_center_x + self.radius) >= player.hitbox_x:
+        if ball_center_x >= player.hitbox_x:
             if (ball_center_y + self.radius) >= player.pos_y and (ball_center_y - self.radius) <= (player.pos_y + player.height):
                 self.hit_by_player = True
                 self.pos_when_hit = self.get_center()
                 intersect = ball_center_y - player.get_center()
                 normalized_intersect = intersect/(player.height/2)
-                self.bounce_angle = normalized_intersect * MAX_BOUNCE_ANGLE
+                self.bounce_angle = self.return_valid_angle(normalized_intersect * MAX_BOUNCE_ANGLE)
                 self.velocity[0] = math.cos(self.bounce_angle) * -1
                 self.velocity[1] = math.sin(self.bounce_angle)
-        elif (ball_center_x - self.radius) <= opponent.hitbox_x:
+        elif self.pos_x - self.radius <= opponent.hitbox_x:
             if (ball_center_y + self.radius) >= opponent.pos_y and (ball_center_y - self.radius) <= (opponent.pos_y + opponent.height):
                 self.hit_by_player = False
                 intersect = ball_center_y - opponent.get_center()
                 normalized_intersect = intersect/(opponent.height/2)
-                self.bounce_angle = normalized_intersect * MAX_BOUNCE_ANGLE
+                self.bounce_angle = self.return_valid_angle(normalized_intersect * MAX_BOUNCE_ANGLE)
                 self.velocity[0] = math.cos(self.bounce_angle) 
                 self.velocity[1] = math.sin(self.bounce_angle)

@@ -35,10 +35,9 @@ def play():
             opponent.move_to_projected_y(projected_y, relative_error)
 
         ball.collide(player, opponent)
+     
+        # print(ball.velocity)
 
-        # print(player.score)
-        print(opponent.score)
-      
         SCREEN.blit(surface, (0,0))
         pg.display.update()
         clock.tick(60)
