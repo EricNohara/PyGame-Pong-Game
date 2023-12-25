@@ -1,4 +1,5 @@
 import pygame as pg, math
+from pygame import mixer
 from helper.myconstants import *
 from helper.quitcheck import check_exit
 from helper.ball import *

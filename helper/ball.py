@@ -1,4 +1,5 @@
 import pygame as pg, math
+from pygame import mixer
 import random
 from helper.myconstants import *
 from helper.paddle import *
@@ -29,6 +30,7 @@ class Ball(object):
 
     def reflect_velocity(self, axis):
         if axis == 0 or axis == 1:
+            WALL_SOUND.play()
             self.velocity[axis] *= -1
     
     def reset_ball(self):
@@ -43,11 +45,11 @@ class Ball(object):
         self.pos_x += self.velocity[0] * DEFAULT_SPEED
         self.pos_y += self.velocity[1] * DEFAULT_SPEED
         if self.pos_x <= self.radius or self.pos_x >= (WIDTH - self.radius):
+            SCORE_SOUND.play()
             won_point = player if self.pos_x <= self.radius else opponent
             won_point.add_score()
             self.reset_ball()
         if self.pos_y <= self.radius or self.pos_y >= (HEIGHT - self.radius):
-            print("Ceiling collision detected!")
             self.reflect_velocity(1)
             self.pos_y = self.radius + 1 if self.pos_y <= self.radius else HEIGHT - self.radius + 1
 
@@ -67,6 +69,7 @@ class Ball(object):
         ball_center_x = self.pos_x + self.radius
         if ball_center_x >= player.hitbox_x:
             if (ball_center_y + self.radius) >= player.pos_y and (ball_center_y - self.radius) <= (player.pos_y + player.height):
+                PADDLE_SOUND.play()
                 self.hit_by_player = True
                 self.pos_when_hit = self.get_center()
                 intersect = ball_center_y - player.get_center()
@@ -76,6 +79,7 @@ class Ball(object):
                 self.velocity[1] = math.sin(self.bounce_angle)
         elif self.pos_x - self.radius <= opponent.hitbox_x:
             if (ball_center_y + self.radius) >= opponent.pos_y and (ball_center_y - self.radius) <= (opponent.pos_y + opponent.height):
+                PADDLE_SOUND.play()
                 self.hit_by_player = False
                 intersect = ball_center_y - opponent.get_center()
                 normalized_intersect = intersect/(opponent.height/2)
