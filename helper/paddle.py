@@ -80,62 +80,45 @@ class OpponentPaddle(Paddle):
         super().__init__()
         self.hitbox_x = self.pos_x + (2 * self.width)
 
+    def find_projected_y(self, ball):
+        angle = ball.bounce_angle
+        active_width = WIDTH - 80 - ball.radius
+        tan_calc = abs(math.tan(angle) * active_width)
+        ball_pos = ball.pos_when_hit
+        
+        if angle < 0:
+            if ball_pos < (HEIGHT - ball.radius) and tan_calc >= ball_pos:
+                num_collisions = ((tan_calc - ball_pos)//HEIGHT) + 1
+            else:
+                num_collisions = tan_calc // HEIGHT
 
-    def move_to_ball(self, ball):
-        if ball.hit_by_player:
-            # ball_center = ball.get_center()
-            # projected_height = abs(math.tan(ball.bounce_angle) * (WIDTH - 80 - 2*ball.radius) + (HEIGHT - ball.pos_when_hit))
+            remainder = (tan_calc + (HEIGHT - ball_pos)) % HEIGHT
 
-            # num_wall_hits = int(projected_height // HEIGHT)
-            # print("wall hits:", num_wall_hits)
+            if num_collisions % 2 != 0:
+                proj_height = remainder
+            elif num_collisions % 2 == 0:
+                proj_height = HEIGHT - remainder
 
-            # if ball.bounce_angle <= 0:
-            #     true_projected_height = projected_height - (HEIGHT * num_wall_hits)
-            #     print(num_wall_hits % 2)
-            #     if num_wall_hits % 2 == 0:
-            #         true_projected_height = HEIGHT - true_projected_height
-            # if ball.bounce_angle > 0:
-            #     true_projected_height = projected_height - (HEIGHT * num_wall_hits)
-            #     print(num_wall_hits % 2)
-            #     if num_wall_hits % 2 != 0:
-            #         true_projected_height = HEIGHT - true_projected_height
-            # # print("projected_height:", true_projected_height)
-
-
-            # # projected_ball_y = abs((WIDTH - 80) * ball.velocity[1]) - projected_neg_y
-                
-            # # print("num walls hit: ", num_ceiling_bounce)
-            # # print("projected y: ", projected_height)
-            # self.pos_y = self.check_valid_pos()
+            self.pos_y = proj_height - (self.height/2)
+            self.pos_y = self.check_valid_pos()
     
-            angle = ball.bounce_angle
-            active_width = WIDTH - 80 - ball.radius
-            tan_calc = abs(math.tan(angle) * active_width)
-            ball_pos = ball.pos_when_hit
+        elif angle >= 0:
+            if ball_pos > 0 and tan_calc >= (HEIGHT - ball_pos):
+                num_collisions = ((tan_calc - (HEIGHT - ball_pos))//HEIGHT) + 1
+            else:
+                num_collisions = tan_calc // HEIGHT
+
+            remainder = (tan_calc + ball_pos) % HEIGHT
             
-            if angle < 0:
-                if ball_pos < (HEIGHT + ball.radius) and tan_calc >= ball_pos:
-                    num_collisions = ((tan_calc - ball_pos)//HEIGHT) + 1
-                    projected_y = tan_calc - ball_pos - ((num_collisions-1)*HEIGHT)
-                    if num_collisions % 2 == 0:
-                        projected_y = HEIGHT - projected_y
-                else:
-                    num_collisions = tan_calc // HEIGHT
-                
-            
+            if num_collisions % 2 != 0:
+                proj_height = HEIGHT - remainder
+            elif num_collisions % 2 == 0:
+                proj_height = remainder
 
-            elif angle >= 0:
-                if ball_pos > 0 and tan_calc >= (HEIGHT - ball_pos):
-                    num_collisions = ((tan_calc - (HEIGHT - ball_pos))//HEIGHT) + 1
-                else:
-                    num_collisions = tan_calc // HEIGHT
+            self.pos_y = proj_height - (self.height/2)
+            self.pos_y = self.check_valid_pos()
 
-                projected_y = tan_calc - (num_collisions * HEIGHT)
-                if num_collisions % 2 != 0:
-                    projected_y = HEIGHT - projected_y
 
-            print(num_collisions)
-            # print("projection:", projected_y)
 
 
     

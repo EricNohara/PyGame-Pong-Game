@@ -4,8 +4,8 @@ import math
 pg.init()
 
 # SCREEN SETTINGS
-# SIZE = (WIDTH, HEIGHT) = (1280, 720)
-SIZE = (WIDTH, HEIGHT) = (640, 360)
+SIZE = (WIDTH, HEIGHT) = (1280, 720)
+# SIZE = (WIDTH, HEIGHT) = (640, 360)       # Testing Mode
 SCREEN = pg.display.set_mode(SIZE)
 CLOCK = pg.time.Clock()     #set the clock to the pygame clock
 
