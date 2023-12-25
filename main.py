@@ -27,7 +27,7 @@ def play():
         opponent.draw(surface)
 
         ball.draw(surface)
-        ball.move()
+        ball.move(player, opponent)
 
         if ball.hit_by_player:
             projected_y = opponent.find_projected_y(ball)
@@ -35,7 +35,9 @@ def play():
             opponent.move_to_projected_y(projected_y, relative_error)
 
         ball.collide(player, opponent)
-        # ball.test()
+
+        # print(player.score)
+        print(opponent.score)
       
         SCREEN.blit(surface, (0,0))
         pg.display.update()

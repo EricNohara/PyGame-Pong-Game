@@ -13,6 +13,7 @@ class Paddle(object):
         self.pos_x = 20
         self.pos_y = (HEIGHT-self.height)/2
         self.color = "white"
+        self.score = 0
 
     def draw(self, surface):
         rect = pg.Rect((self.pos_x, self.pos_y), (self.width, self.height))
@@ -35,11 +36,13 @@ class Paddle(object):
     def get_center(self):
         return self.pos_y + (self.height/2)
     
+    def add_score(self): 
+        self.score += 1
+    
 class PlayerPaddle(Paddle):
     def __init__(self):
         super().__init__()
         self.pos_x = WIDTH-40
-        self.score = 0
         self.scores = [0,0,0,0,0]
         self.is_clicked = False
         self.clicked_loc = 0
