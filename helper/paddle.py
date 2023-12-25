@@ -99,9 +99,6 @@ class OpponentPaddle(Paddle):
             elif num_collisions % 2 == 0:
                 proj_height = HEIGHT - remainder
 
-            self.pos_y = proj_height - (self.height/2)
-            self.pos_y = self.check_valid_pos()
-    
         elif angle >= 0:
             if ball_pos > 0 and tan_calc >= (HEIGHT - ball_pos):
                 num_collisions = ((tan_calc - (HEIGHT - ball_pos))//HEIGHT) + 1
@@ -115,10 +112,19 @@ class OpponentPaddle(Paddle):
             elif num_collisions % 2 == 0:
                 proj_height = remainder
 
-            self.pos_y = proj_height - (self.height/2)
+        return proj_height - self.height/2
+
+    def find_relative_error(self, projected_y):
+        return ((projected_y + OPPONENT_MAX_SPEED) - (projected_y - OPPONENT_MAX_SPEED))/2
+
+    def move_to_projected_y(self, projected_y, error):
+        if self.pos_y < projected_y and abs(self.pos_y - projected_y) > error:
+            self.pos_y += OPPONENT_MAX_SPEED
             self.pos_y = self.check_valid_pos()
-
-
+        elif self.pos_y > projected_y and abs(self.pos_y - projected_y) > error:
+            self.pos_y -= OPPONENT_MAX_SPEED
+            self.pos_y = self.check_valid_pos()
+    
 
 
     

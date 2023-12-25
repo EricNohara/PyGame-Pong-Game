@@ -31,6 +31,8 @@ def play():
 
         if ball.hit_by_player:
             projected_y = opponent.find_projected_y(ball)
+            relative_error = opponent.find_relative_error(projected_y)
+            opponent.move_to_projected_y(projected_y, relative_error)
 
         ball.collide(player, opponent)
         # ball.test()
