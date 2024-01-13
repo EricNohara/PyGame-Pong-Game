@@ -8,6 +8,7 @@ pg.init()
 
 class Ball(object):
     def __init__(self):
+        """Return initial instance variables and methods for the ball class."""
         self.radius = 10
         self.diameter = 2 * self.radius
         self.pos_x = WIDTH/2 - self.radius
