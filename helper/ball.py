@@ -8,7 +8,7 @@ pg.init()
 
 class Ball(object):
     def __init__(self):
-        """Return initial instance variables and methods for the ball class."""
+        """Return instance variables and methods for the ball class."""
         self.radius = 10
         self.diameter = 2 * self.radius
         self.pos_x = WIDTH/2 - self.radius
@@ -23,21 +23,26 @@ class Ball(object):
         self.current_speed = DEFAULT_SPEED
 
     def get_center(self):
+        """Returns calculated center of the ball."""
         return self.pos_y + self.radius
 
     def set_init_velocity(self):
+        """Returns a random normalized initial velocity vector."""
         rand_x = random.uniform(0.2, 0.8)
         return [rand_x, 1-rand_x]       #return a normalized vector
 
     def draw(self, surface):
+        """Do draw the circle to the surface."""
         pg.draw.circle(surface, self.color, (self.pos_x, self.pos_y), self.radius)
 
     def reflect_velocity(self, axis):
+        """Do reflect velocity on a given axis."""
         if axis == 0 or axis == 1:
             WALL_SOUND.play()
             self.velocity[axis] *= -1
     
     def reset_ball(self):
+        """Do reset ball instance variables."""
         self.velocity = self.set_init_velocity()
         self.hit_by_player = False
         self.pos_when_hit = 0
@@ -47,6 +52,9 @@ class Ball(object):
         self.num_hits_by_paddle = 0
 
     def move(self, player, opponent):
+        """Do move the ball according to its speed.
+        If ball hits a wall, call the reflect_velocity() method.
+        """
         self.current_speed = DEFAULT_SPEED + ((self.num_hits_by_paddle // 2) * 0.5)
         self.pos_x += self.velocity[0] * self.current_speed
         self.pos_y += self.velocity[1] * self.current_speed
@@ -59,11 +67,10 @@ class Ball(object):
             self.reflect_velocity(1)
             self.pos_y = self.radius + 1 if self.pos_y <= self.radius else HEIGHT - self.radius + 1
 
-    def test(self):
-        if self.pos_x <= 45 and self.pos_x >= 30:
-            print(self.pos_y + self.radius)
-
     def return_valid_angle(self, angle):
+        """Returns a valid angle given a possible valid angle.
+        If angle is invalid, return a valid angle calculated from the current angle.
+        """
         if angle <= MAX_BOUNCE_ANGLE and angle >= (MAX_BOUNCE_ANGLE * -1):
             return angle
         else:
@@ -71,10 +78,12 @@ class Ball(object):
             return fixed_angle
         
     def increment_num_hit_by_paddle(self):
+        """Do increment the number of paddle hits to keep track of score."""
         if self.hit_paddle == 1:
             self.num_hits_by_paddle += 1
 
     def collide(self, player, opponent):
+        """Do handle collide events with the paddle."""
         ball_center_y = self.get_center()
         ball_center_x = self.pos_x + self.radius
         if ball_center_x >= player.hitbox_x:
