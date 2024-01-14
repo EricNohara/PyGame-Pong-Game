@@ -11,6 +11,8 @@ Classic pong game writtin in Python using the PyGame library.
 * Scoring system displayed on each corresponding side
 
 # Installation Guide:
-Clone this repository locally:
+Clone this repository locally on the command line:
+
+git clone https://github.com/EricNohara/PyGame-Pong-Game.git
 
 Run the main.py file.
