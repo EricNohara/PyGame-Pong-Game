@@ -10,6 +10,7 @@ pg.init()
 ###################################################################################################################
 
 def play():
+    """Do define the play function which initiates the pygame game."""
     pg.display.set_caption("Play Game")
     clock = pg.time.Clock()
     surface = pg.Surface(SCREEN.get_size()).convert()

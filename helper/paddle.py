@@ -8,7 +8,9 @@ from helper.ball import *
 # PADDLE OBJECT
 ###################################################################################################################
 class Paddle(object):
+    """Do define a generic paddle class inherited by PlayerPaddles and OpponentPaddles."""
     def __init__(self):
+        """Return instance variables and methods for the paddle class."""
         self.height = 120
         self.width = 20
         self.pos_x = 20
@@ -17,13 +19,16 @@ class Paddle(object):
         self.score = 0
 
     def draw(self, surface):
+        """Do draw paddle to the given surface."""
         rect = pg.Rect((self.pos_x, self.pos_y), (self.width, self.height))
         pg.draw.rect(surface, self.color, rect)
 
     def increase_score(self):
+        """Do increment the paddle's score."""
         self.score += 1
 
     def check_valid_pos(self):
+        """Do check if the current position of the paddle is valid."""
         min_height = 0
         max_height = HEIGHT - self.height
 
@@ -35,28 +40,36 @@ class Paddle(object):
             return self.pos_y
         
     def get_center(self):
+        """Returns the calculated center of the paddle."""
         return self.pos_y + (self.height/2)
     
     def add_score(self): 
+        """Do add one to the paddle's score."""
         self.score += 1
     
 class PlayerPaddle(Paddle):
+    """Do define a player paddle class which creates a player paddle."""
     def __init__(self):
+        """Do set instance variables defined by parent class."""
         super().__init__()
         self.pos_x = WIDTH-40
         self.scores = [0,0,0,0,0]
         self.is_clicked = False
         self.clicked_loc = 0
         self.hitbox_x = self.pos_x
-        print(self.hitbox_x)
         
     def mouse_on_paddle(self, m_posx, m_posy):
+        """Do return true if the mouse is on the paddle, and false otherwise."""
         if m_posx >= self.pos_x and m_posx <= (self.pos_x + self.width):
             if m_posy >= self.pos_y and m_posy <= (self.pos_y + self.height):
                 return True
         return False
         
     def handle_keys(self):
+        """Do handle keypresses to move the player up or down
+        Do check if pygame is exited.
+        Do check if a player position is valid.
+        """
         keys = pg.key.get_pressed()
         mouse_pos = pg.mouse.get_pos()
         adjusted_speed = DEFAULT_SPEED + 10 if keys[pg.K_LSHIFT] or keys[pg.K_RSHIFT] else DEFAULT_SPEED
@@ -81,11 +94,16 @@ class PlayerPaddle(Paddle):
             self.pos_y = self.check_valid_pos()
 
 class OpponentPaddle(Paddle):
+    """Do define opponent player paddle class."""
     def __init__ (self):
+        """Do define opponent instance variables from parent class."""
         super().__init__()
         self.hitbox_x = self.pos_x + self.width
 
     def find_projected_y(self, ball):
+        """Do calculate the projected number of wall hits using trigonometry.
+        Return the project y position of the ball after the player paddle collides with the ball
+        """
         angle = ball.bounce_angle
         active_width = WIDTH - 80 - ball.radius
         tan_calc = abs(math.tan(angle) * active_width)
@@ -120,9 +138,11 @@ class OpponentPaddle(Paddle):
         return proj_height - self.height/2
 
     def find_relative_error(self, projected_y):
+        """Return the relative error for the given projected y value."""
         return ((projected_y + OPPONENT_MAX_SPEED) - (projected_y - OPPONENT_MAX_SPEED))/2
 
     def move_to_projected_y(self, projected_y, error):
+        """Do move the opponent to the projected y value of the ball at a fixed speed."""
         if self.pos_y < projected_y and abs(self.pos_y - projected_y) > error:
             self.pos_y += OPPONENT_MAX_SPEED
             self.pos_y = self.check_valid_pos()
