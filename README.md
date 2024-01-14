@@ -10,7 +10,7 @@ Classic pong game writtin in Python using the PyGame library.
 * Sound effects consistent with classic pong game
 * Scoring system displayed on each corresponding side
 
-### Installation Guide:
+# Installation Guide:
 Clone this repository locally:
 
 Run the main.py file.
