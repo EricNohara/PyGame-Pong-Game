@@ -16,3 +16,7 @@ Clone this repository locally on the command line:
 git clone https://github.com/EricNohara/PyGame-Pong-Game.git
 
 Run the main.py file.
+
+## Demo Images:
+<img width="960" alt="Pong" src="https://github.com/EricNohara/PyGame-Pong-Game/assets/123284198/0d746958-29ad-4fd4-9b2f-a8b62719b391">
+
